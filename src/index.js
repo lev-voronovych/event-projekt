@@ -1,6 +1,6 @@
-key ='JHFGnXEDch2MFGcn1xSI30ZApMODKhwX'
-baseURL = 'https://app.ticketmaster.com/discovery/v2/events.json'
-pageLimit = 20 ;
+const key ='JHFGnXEDch2MFGcn1xSI30ZApMODKhwX'
+const baseURL = 'https://app.ticketmaster.com/discovery/v2/events.json'
+const pageLimit = 20 ;
 const eventListContainer = document.querySelector('.event-list');
 
 async function getEvents() {
