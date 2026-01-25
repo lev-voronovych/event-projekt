@@ -1,1 +1,23 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
+@import './reset';
+body{
+    background-color:rgb(24, 24, 27);
+    font-family:  "Montserrat";
+}
+.container {
+    width: 930px;
+    padding: 0 15px;
+    margin-left: auto;
+    margin-right: auto;
+    outline: 1px solid black;
+
+    @media screen and (min-width:480px) {
+        width: 480px;
+    }
+    @media screen and (min-width:768px) {
+        width: 768px;
+    }
+    @media screen and (min-width:1200px) {
+        width: 1200px;
+    }
+}

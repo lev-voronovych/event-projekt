@@ -37,7 +37,7 @@ function renderEvents(events) {
   const markup = events.map((event) => {
     const imgUrl = getEventImg(event);
      
-    return `<li class="event-item">
+    return `<li data-id="${event.id}" class="event-item">
     <img alt='' src="${imgUrl}"></img>
     <p class="event-name">${event.name}</p>
     <p class="event-time">${event.dates.start.localDate}</p>    
@@ -49,6 +49,21 @@ function renderEvents(events) {
   
 
 }
+
+// modal
+// eventListContainer.addEventListener('click',async (e) => {
+//   const card = e.target.closest('.event-item');
+//   if (!card) return;
+//   console.log(card.dataset.id);
+//   const eventId = card.dataset.id;
+//   try {
+//     const response = await fetch(`${baseURL}?apikey=${key}&classificationName=music&page=0&size=${pageLimit}&source=universe`
+//       if(!res)
+//     );
+//   } catch (error) {
+    
+//   }
+// });
 
 
 async function startApp() {
