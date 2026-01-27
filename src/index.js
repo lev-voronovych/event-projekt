@@ -1,22 +1,26 @@
-const key ='JHFGnXEDch2MFGcn1xSI30ZApMODKhwX'
-const baseURL = 'https://app.ticketmaster.com/discovery/v2/events.json'
-const pageLimit = 20 ;
+import { togleModal } from './js/modal.js';
+
+const key = 'JHFGnXEDch2MFGcn1xSI30ZApMODKhwX';
+const baseURL = 'https://app.ticketmaster.com/discovery/v2/events.json';
+const pageLimit = 20;
 const eventListContainer = document.querySelector('.event-list');
 
 async function getEvents() {
-    try {
-        let response = await fetch(`${baseURL}?apikey=${key}&classificationName=music&page=0&size=${pageLimit}&source=universe`);
+  try {
+    let response = await fetch(
+      `${baseURL}?apikey=${key}&classificationName=music&page=0&size=${pageLimit}&source=universe`
+    );
 
-          if (!response.ok) {
-            throw new Error('HTTP error: ' + response.status);
-        }
-        
-      let data = await response.json();
-      console.log(data._embedded.events)
-      return data;
-    } catch (error){
-        console.error(error)
+    if (!response.ok) {
+      throw new Error('HTTP error: ' + response.status);
     }
+
+    let data = await response.json();
+    console.log(data._embedded.events);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // '4_3';
@@ -26,58 +30,102 @@ function getEventImg(event) {
   const img =
     event.images.find(img => img.ratio === '4_3') ||
     event.images.find(img => img.ratio === '3_2') ||
-    event.images[0]
+    event.images[0];
 
   return img.url;
 }
 
-
-
 function renderEvents(events) {
-  const markup = events.map((event) => {
-    const imgUrl = getEventImg(event);
-     
-    return `<li data-id="${event.id}" class="event-item">
+  const markup = events
+    .map(event => {
+      const imgUrl = getEventImg(event);
+
+      return `<li data-id="${event.id}" class="event-item">
     <img alt='' src="${imgUrl}"></img>
     <p class="event-name">${event.name}</p>
     <p class="event-time">${event.dates.start.localDate}</p>    
     <p class="event-location">${event._embedded.venues[0].name}  </p>    
     </li>`;
-  }).join("")
+    })
+    .join('');
 
   eventListContainer.innerHTML = markup;
-  
-
 }
 
-// modal
-// eventListContainer.addEventListener('click',async (e) => {
-//   const card = e.target.closest('.event-item');
-//   if (!card) return;
-//   console.log(card.dataset.id);
-//   const eventId = card.dataset.id;
-//   try {
-//     const response = await fetch(`${baseURL}?apikey=${key}&classificationName=music&page=0&size=${pageLimit}&source=universe`
-//       if(!res)
-//     );
-//   } catch (error) {
-    
-//   }
-// });
 
+
+async function getEventById(id){
+  try {
+     const response = await fetch(
+      `https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=JHFGnXEDch2MFGcn1xSI30ZApMODKhwX`);
+   
+    if (!response.ok) {
+      throw new Error('HTTP error: ' + response.status);
+    }
+
+    const event = await response.json();
+    return event;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+function renderModal(event) {
+  const modalContent = document.querySelector('.modal-content');
+  const imgUrl = getEventImg(event);
+  
+  modalContent.innerHTML = `
+  <img src="${imgUrl}" class="event-modal-img" alt="#">
+    <p class="modal-event-name">${event.name}</p>
+
+    <span class="modal-location">
+      ${event._embedded?.venues?.[0]?.country?.name ?? ''}
+    </span>,
+    <span class="modal-location">
+      ${event._embedded?.venues?.[0]?.city?.name ?? ''}
+    </span>
+
+    <p class="modal-location">
+      ${event._embedded?.venues?.[0]?.address?.line1 ?? 'Адреса невідома'}
+    </p>
+
+    <p class="modal-time">
+      ${event.dates?.start?.localDate ?? 'Дата невідома'}
+    </p>
+
+    <p class="modal-time">
+      ${event.dates?.start?.localTime ?? 'Час невідомий'}
+    </p>
+  `;
+}
+
+
+// modal
+eventListContainer.addEventListener('click', async e => {
+  const card = e.target.closest('.event-item');
+  if (!card) return;
+
+  const eventId = card.dataset.id;
+
+  try {
+    const event = await getEventById(eventId)
+    
+
+    renderModal(event)
+    togleModal()
+  } catch (error) {
+    console.error('Помилка завантаження деталей подій:', error);
+  }
+});
 
 async function startApp() {
   try {
+    const events = await getEvents();
 
-    const events = await getEvents(); 
-
-    renderEvents(events._embedded.events); 
-
+    renderEvents(events._embedded.events);
   } catch (error) {
     console.error(' Помилка запуску проєкту:', error);
   }
 }
 
-
-
-startApp()
+startApp();
