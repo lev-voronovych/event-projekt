@@ -4,7 +4,10 @@ const key = 'JHFGnXEDch2MFGcn1xSI30ZApMODKhwX';
 const baseURL = 'https://app.ticketmaster.com/discovery/v2/events.json';
 const pageLimit = 20;
 const eventListContainer = document.querySelector('.event-list');
+const searchKeywordInput = document.querySelector('.header-search');
 
+
+// events
 async function getEvents() {
   try {
     let response = await fetch(
@@ -25,7 +28,7 @@ async function getEvents() {
 
 // '4_3';
 // '3_2';
-
+// imgs
 function getEventImg(event) {
   const img =
     event.images.find(img => img.ratio === '4_3') ||
@@ -34,7 +37,7 @@ function getEventImg(event) {
 
   return img.url;
 }
-
+// render      
 function renderEvents(events) {
   const markup = events
     .map(event => {
@@ -53,7 +56,7 @@ function renderEvents(events) {
 }
 
 
-
+// modal
 async function getEventById(id){
   try {
      const response = await fetch(
@@ -100,7 +103,7 @@ function renderModal(event) {
 }
 
 
-// modal
+
 eventListContainer.addEventListener('click', async e => {
   const card = e.target.closest('.event-item');
   if (!card) return;
@@ -118,14 +121,53 @@ eventListContainer.addEventListener('click', async e => {
   }
 });
 
+async function OnKeywordSearch() {
+  const keyword = searchKeywordInput.value.trim();
+
+  if (!keyword) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${baseURL}?apikey=${key}&keyword=${(keyword)}&size=20`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+
+
+       if (data._embedded?.events) {
+         const events = data._embedded.events;
+        renderEvents(events);
+       } else {
+         console.log('Подій не знайдено');
+       }
+  
+  } catch (error) {
+    console.error('Помилка завантаження деталей подій при пошуку:', error);
+  }
+}
+
+searchKeywordInput.addEventListener('input',OnKeywordSearch)
+
+
+// start-app
+
 async function startApp() {
   try {
     const events = await getEvents();
 
     renderEvents(events._embedded.events);
+
   } catch (error) {
     console.error(' Помилка запуску проєкту:', error);
   }
 }
+
 
 startApp();
