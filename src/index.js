@@ -44,7 +44,7 @@ function renderEvents(events) {
       const imgUrl = getEventImg(event);
 
       return `<li data-id="${event.id}" class="event-item">
-    <img alt='' src="${imgUrl}"></img>
+    <img alt='' class="event-img" src="${imgUrl}"></img>
     <p class="event-name">${event.name}</p>
     <p class="event-time">${event.dates.start.localDate}</p>    
     <p class="event-location">${event._embedded.venues[0].name}  </p>    
@@ -59,13 +59,11 @@ function renderEvents(events) {
 // modal
 async function getEventById(id){
   try {
-     const response = await fetch(
-      `https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=JHFGnXEDch2MFGcn1xSI30ZApMODKhwX`);
-   
+     const response = await fetch(`https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=JHFGnXEDch2MFGcn1xSI30ZApMODKhwX`);
+
     if (!response.ok) {
       throw new Error('HTTP error: ' + response.status);
     }
-
     const event = await response.json();
     return event;
   } catch (error) {
@@ -80,7 +78,6 @@ function renderModal(event) {
   modalContent.innerHTML = `
   <img src="${imgUrl}" class="event-modal-img" alt="#">
     <p class="modal-event-name">${event.name}</p>
-
     <span class="modal-location">
       ${event._embedded?.venues?.[0]?.country?.name ?? ''}
     </span>,
@@ -102,8 +99,6 @@ function renderModal(event) {
   `;
 }
 
-
-
 eventListContainer.addEventListener('click', async e => {
   const card = e.target.closest('.event-item');
   if (!card) return;
@@ -112,8 +107,6 @@ eventListContainer.addEventListener('click', async e => {
 
   try {
     const event = await getEventById(eventId)
-    
-
     renderModal(event)
     togleModal()
   } catch (error) {
@@ -127,27 +120,20 @@ async function OnKeywordSearch() {
   if (!keyword) {
     return;
   }
-
   try {
     const response = await fetch(
       `${baseURL}?apikey=${key}&keyword=${(keyword)}&size=20`
     );
-
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
-
     const data = await response.json();
-
-
-
        if (data._embedded?.events) {
          const events = data._embedded.events;
         renderEvents(events);
        } else {
          console.log('Подій не знайдено');
        }
-  
   } catch (error) {
     console.error('Помилка завантаження деталей подій при пошуку:', error);
   }

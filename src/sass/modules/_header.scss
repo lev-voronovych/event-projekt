@@ -1,15 +1,21 @@
-.header-box{
-    margin-top: 40px;
+.header {
+  padding: 78px 0 61px 0;
+  background-image: url(/src/images/header-background.png);
+  @media screen and (min-width: 768px) {
+    padding: 40px 0 136px 0;
+    background-image: url(/src/images/header-baground-tablet.png);
+  }
+  @media screen and (min-width: 1200px) {
+    padding: 40px 0 146px 0;
+    background-image: url(/src/images/header-background-dekstop.png);
+  }
 }
 
-
-
-.header-title{
-text-align: center;
-height: 122px;
-font-size: 50px;
-font-weight: 900;
-line-height: 61px;
-color: rgba(220, 86, 197, 1);
-
+.header-title {
+  text-align: center;
+  height: 122px;
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 61px;
+  color: rgba(220, 86, 197, 1);
 }
