@@ -25,8 +25,8 @@
   transform: translate(-50%, -40%);
   width: 930px;
   padding: 62px 30px;
-  background-color:#fff;
-  border-radius: 4px;
+  border-radius: 150px 0px 150px 0px;
+  background: rgba(255, 242, 253, 1);
 }
 
 .btn-modal-close {
@@ -44,3 +44,5 @@
   transition: fill 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
 }
+
+
