@@ -12,22 +12,57 @@
 .event-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-
+  column-gap: 25px;
+  row-gap: 39px;
+  justify-content: center;
   @media screen and (min-width: 768px) {
-    gap: 27px;
+    column-gap: 27px;
+    row-gap: 58px;
   }
   @media screen and (min-width: 1200px) {
-    gap: 70px;
+    column-gap: 70px;
+    row-gap: 63px;
+  }
+}
+.event-item {
+  width: 128px;
+
+  @media screen and (min-width: 768px) {
+    height: 180;
+  }
+  
+}
+
+.event-box{
+  position: relative;
+width: 128px;
+
+    @media screen and (min-width: 768px) {
+    width: 180px;
+  }
+
+  &::after{
+    content: "";
+    width: 153px;
+    height: 143px;
+    position: absolute;
+    right: -14px;
+    top: -13px;
+    display: block;
+    border-radius: 50px 0;
+    border: 1px solid green;
   }
 }
 
-.event-img {
-  border-radius: 50px 0 50px 0;
-  width: 128px;
-  height: 161px;
 
-  @media screen and (min-width: 768px) {
+
+.event-img-box{
+  border-radius: 50px 0 50px 0;
+   width: 100%;
+  height: 161px;
+  overflow: hidden;
+
+    @media screen and (min-width: 768px) {
     width: 180px;
     height: 227px;
   }
@@ -35,6 +70,13 @@
     width: 180px;
     height: 227px;
   }
+
+}
+
+.event-img {
+  object-fit: cover;
+  height: 100%;
+
 }
 
 .event-name {

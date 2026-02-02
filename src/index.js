@@ -6,7 +6,6 @@ const pageLimit = 20;
 const eventListContainer = document.querySelector('.event-list');
 const searchKeywordInput = document.querySelector('.header-search');
 
-
 // events
 async function getEvents() {
   try {
@@ -37,29 +36,42 @@ function getEventImg(event) {
 
   return img.url;
 }
-// render      
+// render
 function renderEvents(events) {
   const markup = events
     .map(event => {
       const imgUrl = getEventImg(event);
 
-      return `<li data-id="${event.id}" class="event-item">
-    <img alt='' class="event-img" src="${imgUrl}"></img>
+      return `
+      <li data-id="${event.id}" class="event-item">
+  <div class="event-box">
+    <div class="event-img-box">
+      <img
+        class="event-img"
+        src="${imgUrl}"
+        alt="${event.name}"
+      />
+    </div>
+
     <p class="event-name">${event.name}</p>
-    <p class="event-time">${event.dates.start.localDate}</p>    
-    <p class="event-location">${event._embedded.venues[0].name}  </p>    
-    </li>`;
+    <p class="event-time">${event.dates.start.localDate}</p>
+    <p class="event-location">${event._embedded.venues[0].name}</p>
+  </div>
+</li>
+
+      `;
     })
     .join('');
 
   eventListContainer.innerHTML = markup;
 }
 
-
 // modal
-async function getEventById(id){
+async function getEventById(id) {
   try {
-     const response = await fetch(`https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=JHFGnXEDch2MFGcn1xSI30ZApMODKhwX`);
+    const response = await fetch(
+      `https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=JHFGnXEDch2MFGcn1xSI30ZApMODKhwX`
+    );
 
     if (!response.ok) {
       throw new Error('HTTP error: ' + response.status);
@@ -67,14 +79,14 @@ async function getEventById(id){
     const event = await response.json();
     return event;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
 function renderModal(event) {
   const modalContent = document.querySelector('.modal-content');
   const imgUrl = getEventImg(event);
-  
+
   modalContent.innerHTML = `
   <img src="${imgUrl}" class="event-modal-img" alt="#">
     <p class="modal-event-name">${event.name}</p>
@@ -106,9 +118,9 @@ eventListContainer.addEventListener('click', async e => {
   const eventId = card.dataset.id;
 
   try {
-    const event = await getEventById(eventId)
-    renderModal(event)
-    togleModal()
+    const event = await getEventById(eventId);
+    renderModal(event);
+    togleModal();
   } catch (error) {
     console.error('Помилка завантаження деталей подій:', error);
   }
@@ -122,25 +134,24 @@ async function OnKeywordSearch() {
   }
   try {
     const response = await fetch(
-      `${baseURL}?apikey=${key}&keyword=${(keyword)}&size=20`
+      `${baseURL}?apikey=${key}&keyword=${keyword}&size=20`
     );
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json();
-       if (data._embedded?.events) {
-         const events = data._embedded.events;
-        renderEvents(events);
-       } else {
-         console.log('Подій не знайдено');
-       }
+    if (data._embedded?.events) {
+      const events = data._embedded.events;
+      renderEvents(events);
+    } else {
+      console.log('Подій не знайдено');
+    }
   } catch (error) {
     console.error('Помилка завантаження деталей подій при пошуку:', error);
   }
 }
 
-searchKeywordInput.addEventListener('input',OnKeywordSearch)
-
+searchKeywordInput.addEventListener('input', OnKeywordSearch);
 
 // start-app
 
@@ -149,11 +160,9 @@ async function startApp() {
     const events = await getEvents();
 
     renderEvents(events._embedded.events);
-
   } catch (error) {
     console.error(' Помилка запуску проєкту:', error);
   }
 }
-
 
 startApp();
