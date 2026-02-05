@@ -76,7 +76,6 @@
     display: block;
     border-radius: 50px 0;
     border: 1px solid #dc56c5;
-    z-index: 0;
     @media screen and (min-width: 768px) {
       width: 153px;
       height: 143px;
@@ -143,12 +142,14 @@
   font-size: 12px;
   font-weight: 600;
   line-height: 15px;
-
+  text-align: center;
   @media screen and (min-width: 768px) {
     font-size: 14px;
     line-height: 17px;
   }
 }
+
+
 
 .pagination {
   display: flex;

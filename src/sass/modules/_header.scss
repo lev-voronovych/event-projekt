@@ -1,6 +1,9 @@
 .header {
   padding: 78px 0 61px 0;
   background-image: url(/src/images/header-background.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   @media screen and (min-width: 768px) {
     padding: 40px 0 136px 0;
     background-image: url(/src/images/header-baground-tablet.png);
@@ -42,11 +45,11 @@
   gap: 10px;
   justify-content: center;
 
-    @media screen and (min-width: 768px) {
-  margin-top: 27px;
+  @media screen and (min-width: 768px) {
+    margin-top: 27px;
   }
   @media screen and (min-width: 1200px) {
-  margin-top: 52px;
+    margin-top: 52px;
   }
 }
 
@@ -61,4 +64,46 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
+}
+
+.search-field {
+  position: relative;
+  display: inline-block;
+}
+
+.search-field .header-search {
+  padding-right: 44px;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  display: block;
+}
+
+.select-field {
+  position: relative;
+  display: inline-block;
+}
+
+.select-field .header-country-search {
+  padding-right: 40px;
+}
+
+.select-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 10px;
+  pointer-events: none;
+  display: block;
+  fill: currentColor;
+  color: rgba(147, 147, 147, 1);
 }

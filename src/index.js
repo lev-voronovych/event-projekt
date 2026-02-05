@@ -71,7 +71,9 @@ function renderEvents(events) {
 
     <p class="event-name">${event.name}</p>
     <p class="event-time">${event.dates.start.localDate}</p>
+    <div class="icon-box">
     <p class="event-location">${event._embedded?.venues?.[0]?.name ?? 'Місце невідоме'}</p>
+    </div>
   </div>
 </li>
 
@@ -82,7 +84,7 @@ function renderEvents(events) {
   eventListContainer.innerHTML = markup;
 }
 
-// pagination 
+// pagination
 function updatePaginationDisplay() {
   paginationCurrent.textContent = currentPage + 1;
   paginationTotal.textContent = totalPages;
@@ -128,27 +130,46 @@ function renderModal(event) {
   const imgUrl = getEventImg(event);
 
   modalContent.innerHTML = `
+   <img src="${imgUrl}" class="event-modal-circleImg" alt="#">
+<div class="modal-box">
   <img src="${imgUrl}" class="event-modal-img" alt="#">
-    <p class="modal-event-name">${event.name}</p>
-    <span class="modal-location">
-      ${event._embedded?.venues?.[0]?.country?.name ?? ''}
-    </span>,
-    <span class="modal-location">
-      ${event._embedded?.venues?.[0]?.city?.name ?? ''}
-    </span>
-
-    <p class="modal-location">
-      ${event._embedded?.venues?.[0]?.address?.line1 ?? 'Адреса невідома'}
+  <div class="modal-info-box">
+  <h3 class="modal-info modal-title">INFO</h3>
+  <p class="modal-descr modal-text">
+      ${event.description}
     </p>
-
-    <p class="modal-time">
+    <h3 class="modal-name modal-title">WHEN</h3>
+     <p class="modal-time modal-text">
       ${event.dates?.start?.localDate ?? 'Дата невідома'}
     </p>
 
-    <p class="modal-time">
+    <p class="modal-time modal-text">
       ${event.dates?.start?.localTime ?? 'Час невідомий'}
     </p>
-  `;
+<h3 class="modal-name modal-title ">WHERE</h3>
+    <span class="modal-location modal-text">
+      ${event._embedded?.venues?.[0]?.country?.name ?? ''}
+    </span>
+    <span class="modal-location modal-text">
+      ${event._embedded?.venues?.[0]?.city?.name ?? ''}
+    </span>
+
+    <p class="modal-location modal-text">
+      ${event._embedded?.venues?.[0]?.address?.line1 ?? 'Адреса невідома'}
+    </p>
+   <h3 class="modal-name modal-title" >WHO</h3>
+   <p class="modal-time modal-text">
+      ${event.name}
+    </p>
+     <h3 class="modal-name modal-title">PRICES </h3>
+     <p class="modal-standart-price modal-text">Standart 300 UAH</p>
+<button class="modal-buy">BUY TICKETS</button>
+       <p class="modal-vip-price modal-text">VIP 1000 UAH</p>
+       <button class="modal-buy">BUY TICKETS</button>
+  </div>
+  </div>
+  <button class="modal-more">MORE FROM THIS AUTHOR</button>  `;
+  
 }
 
 eventListContainer.addEventListener('click', async e => {
