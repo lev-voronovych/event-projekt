@@ -6,7 +6,7 @@ const pageLimit = 20;
 const eventListContainer = document.querySelector('.event-list');
 const searchKeywordInput = document.querySelector('.header-search');
 
-// pagination
+
 const paginationPrevBtn = document.querySelector('.pagination-prev');
 const paginationNextBtn = document.querySelector('.pagination-next');
 const paginationCurrent = document.querySelector('.pagination-current');
@@ -16,7 +16,7 @@ let currentPage = 0;
 let totalPages = 0;
 let currentSearchQuery = '';
 
-// events
+
 async function getEvents(page = 0, keyword = '') {
   try {
     let url = `${baseURL}?apikey=${key}&page=${page}&size=${pageLimit}`;
@@ -41,9 +41,7 @@ async function getEvents(page = 0, keyword = '') {
   }
 }
 
-// '4_3';
-// '3_2';
-// imgs
+
 function getEventImg(event) {
   const img =
     event.images.find(img => img.ratio === '4_3') ||
@@ -52,7 +50,7 @@ function getEventImg(event) {
 
   return img.url;
 }
-// render
+
 function renderEvents(events) {
   const markup = events
     .map(event => {
@@ -84,7 +82,7 @@ function renderEvents(events) {
   eventListContainer.innerHTML = markup;
 }
 
-// pagination
+
 function updatePaginationDisplay() {
   paginationCurrent.textContent = currentPage + 1;
   paginationTotal.textContent = totalPages;
@@ -93,7 +91,7 @@ function updatePaginationDisplay() {
   paginationNextBtn.disabled = currentPage === totalPages - 1;
 }
 
-//current page
+
 async function loadPage(page, keyword = '') {
   try {
     const data = await getEvents(page, keyword);
@@ -108,7 +106,7 @@ async function loadPage(page, keyword = '') {
   }
 }
 
-// modal
+
 async function getEventById(id) {
   try {
     const response = await fetch(
@@ -221,9 +219,6 @@ paginationNextBtn.addEventListener('click', () => {
 
 async function startApp() {
   try {
-    // const events = await getEvents();
-
-    // renderEvents(events._embedded.events);
     loadPage(0);
   } catch (error) {
     console.error(' Помилка запуску проєкту:', error);
