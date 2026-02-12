@@ -190,15 +190,19 @@ eventListContainer.addEventListener('click', async e => {
 async function OnKeywordSearch() {
   const keyword = searchKeywordInput.value.trim();
 
-  if (!keyword) {
-    currentSearchQuery = '';
-    loadPage(0);
-    return;
-  }
-
   currentSearchQuery = keyword;
   currentPage = 0;
-  loadPage(0, keyword);
+
+  try {
+    if (!currentSearchQuery) {
+      await loadPage(0);
+      return;
+    }
+
+    await loadPage(0, currentSearchQuery);
+  } catch (error) {
+    console.error('Помилка пошуку:', error);
+  }
 }
 
 searchKeywordInput.addEventListener('input', OnKeywordSearch);
@@ -217,9 +221,9 @@ paginationNextBtn.addEventListener('click', () => {
 
 async function startApp() {
   try {
-    const events = await getEvents();
+    // const events = await getEvents();
 
-    renderEvents(events._embedded.events);
+    // renderEvents(events._embedded.events);
     loadPage(0);
   } catch (error) {
     console.error(' Помилка запуску проєкту:', error);
